@@ -14,6 +14,7 @@ public class Level {
     int obstacleMoveSpeed = 0;
     public int score = 0;
     public static int sf = 4;
+    public static final int OBSTACLE_HEIGHT = 250;
 
     public Level(int speed, Obstacle[] obstacles, GameImage bg, Player player, Obstacle goal, int minGap, int maxGap) {
         this.speed = speed - 10;
@@ -26,14 +27,17 @@ public class Level {
         this.obstacleMoveSpeed = speed;
         this.background = bg;
         onField.add(new Obstacle(140, 250, 50*sf, 20*sf, possibleObstacles[0].obstacleImg.image));
+        onField.add(new Obstacle(140 + 200, 250, 50*sf, 20*sf, possibleObstacles[0].obstacleImg.image));
+        onField.add(new Obstacle(140 + 200 + 200, 250, 50*sf, 20*sf, possibleObstacles[0].obstacleImg.image));
         // System.out.println("obstacle scale: " + onField.get(0).obstacleImg.width);
     }  
 
 
     public void updateBG() {
-        background.x--;
-        if (background.x <= 0) {
-            background.x = 500;
+        System.out.println("UPDATE BG W " + background.x);
+        background.x-=1;
+        if (background.x <= -800) {
+            background.x = 0;
         }
         score++;
     }
@@ -46,15 +50,15 @@ public class Level {
             newX = 140;
             buildNew = true;
         } else {
-            newX = onField.get(onField.size() - 1).obstacleImg.x + (int)(Math.random() * 10 + 1); 
-            if (newX - onField.get(onField.size() - 1).obstacleImg.x > minObstacleGap) {
+            newX = onField.get(onField.size() - 1).obstacleImg.x + (int)(Math.random() * 100 + 1); 
+            if (500 - onField.get(onField.size() - 1).obstacleImg.x > minObstacleGap) {
                 buildNew = true;
             }
         }
 
         if (buildNew) {
             Obstacle chosenObstacle = possibleObstacles[(int) (Math.random() * possibleObstacles.length)];
-            Obstacle obst = new Obstacle(newX, 300, chosenObstacle.obstacleImg.width, chosenObstacle.obstacleImg.height, chosenObstacle.obstacleImg.image);
+            Obstacle obst = new Obstacle(500+ (int) (Math.random() * 30 + 1), OBSTACLE_HEIGHT, chosenObstacle.obstacleImg.width, chosenObstacle.obstacleImg.height, chosenObstacle.obstacleImg.image);
             onField.add(obst);
         }
     }
@@ -63,10 +67,24 @@ public class Level {
         System.out.println("CLEANING + MOVING");
         for (int cur = 0; cur < onField.size(); cur++) {
             Obstacle i = onField.get(cur);
-            i.obstacleImg.x -= 1;
+            i.obstacleImg.x -= 2;
             System.out.println("I + " + i.obstacleImg.x);
             if (i.obstacleImg.x <= 0) {
                 onField.remove(cur);
+            }
+        }
+
+        for (Obstacle i : onField) {
+            if (i.isColliding(player)) {
+                System.out.println("COLLISION HAPPENED! ");
+                int prevSize = player.collisions.size();
+                player.collisions.add(i);
+                if (prevSize != player.collisions.size()) {
+                    player.lives--;
+                }
+                if (player.lives == 0) {
+                    System.out.println("EXIT WITH STATUS LIVES = 0");
+                }
             }
         }
     }

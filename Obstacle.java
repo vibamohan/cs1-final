@@ -15,7 +15,7 @@ class Obstacle {
     }
 
 
-    boolean isCollliding(Player p) {
+    boolean isColliding(Player p) {
         int[][] locationInfo = p.getLocationInfo();
         return (overlap(obstacleImg.x, obstacleImg.width,  locationInfo[0][0], locationInfo[1][0])
              || overlap(obstacleImg.y, obstacleImg.height, locationInfo[0][1], locationInfo[1][1]));

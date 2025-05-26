@@ -36,7 +36,7 @@ public class Screen extends JPanel implements KeyListener{
             new Obstacle(0, 0, 50*Level.sf, 20*Level.sf,
                 ImageIO.read(new File("assets/images/bushl1.png")))
         };
-        level = new Level(40, obs, new GameImage(0, 0, 800, 350, ImageIO.read(new File("assets/images/bgl1.jpeg"))), player, null, 200, 240);
+        level = new Level(40, obs, new GameImage(0, 0, 1600, 350, ImageIO.read(new File("assets/images/bgl1.png"))), player, null, 300, 240);
 
         // add Key listener
         addKeyListener(this);

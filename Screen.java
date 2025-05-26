@@ -29,14 +29,14 @@ public class Screen extends JPanel implements KeyListener{
         // initialize variables
         player = new Player(70, Player.GROUND - 2, new BufferedImage(WIDTH, HEIGHT, 1));
         Obstacle[] obs = new Obstacle[] {
-            new Obstacle(0, 0, 30, 50,
+            new Obstacle(0, 0, 50*Level.sf, 20*Level.sf,
                 ImageIO.read(new File("assets/images/bushl1.png"))),
-            new Obstacle(0, 0, 30, 50,
+            new Obstacle(0, 0, 50*Level.sf, 20*Level.sf,
                 ImageIO.read(new File("assets/images/bushl1.png"))),
-            new Obstacle(0, 0, 30, 50,
+            new Obstacle(0, 0, 50*Level.sf, 20*Level.sf,
                 ImageIO.read(new File("assets/images/bushl1.png")))
         };
-        level = new Level(10, obs, new GameImage(0, 0, 50, 10, ImageIO.read(new File("assets/images/bgl1.jpeg"))), player, null, 50, 70);
+        level = new Level(40, obs, new GameImage(0, 0, 800, 350, ImageIO.read(new File("assets/images/bgl1.jpeg"))), player, null, 200, 240);
 
         // add Key listener
         addKeyListener(this);
@@ -76,15 +76,15 @@ public class Screen extends JPanel implements KeyListener{
     public void animate(){
         while(true){
             try {
-                Thread.sleep(10);    // 10 milliseconds
+                Thread.sleep(20);    // 10 milliseconds
             } catch(InterruptedException ex) {
                 Thread.currentThread().interrupt();
             }
            
             player.gravityEffect();
-            // level.updateBG();
-            // level.cleanAndMoveObstacles();
-            // level.spawnObstacle();
+            level.updateBG();
+            level.cleanAndMoveObstacles();
+            level.spawnObstacle();
             repaint();
         }
     }

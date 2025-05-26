@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 
@@ -9,8 +10,8 @@ class Obstacle {
     GameImage obstacleImg;
 
 
-    public Obstacle(int x, int y, BufferedImage picture) {
-        this.obstacleImg = new GameImage(x, y, picture);
+    public Obstacle(int x, int y, int w, int h, Image picture) {
+        this.obstacleImg = new GameImage(x, y, w, h, picture);
     }
 
 

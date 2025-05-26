@@ -10,19 +10,17 @@ public class Player {
     // Constants
     public static final int GROUND = 300;
     public static final int PLAYER_HEIGHT = 50;
-    public static final int GRAVITY = 1;
+    public static final int GRAVITY = 3;
     public static final int JUMP_STRENGTH = -20;
     public static final int TERMINAL_VELOCITY = 10;
 
     public Player(int x, int y, BufferedImage look) {
-        player = new GameImage(x, y, look);
+        player = new GameImage(x, y, 30, PLAYER_HEIGHT, look);
     }
 
     // draw the player
     public void draw(Graphics g) {
         gravityEffect();
-
-        player.y += yVel;
 
         // Prevent going below ground
         if (player.y + PLAYER_HEIGHT > GROUND) {
@@ -30,7 +28,9 @@ public class Player {
             yVel = 0;
         }
 
-        System.out.println("Y: " + player.y + " , yVel = " + yVel);
+        player.y += yVel;
+
+        // System.out.println("Y: " + player.y + " , yVel = " + yVel);
 
         g.setColor(new Color(255, 0, 0));
         g.fillRect(player.x, player.y, 50, PLAYER_HEIGHT);
@@ -39,7 +39,6 @@ public class Player {
 
     // Move the player up
     public void jump() {
-        System.out.println("JUMP");
         if (player.y + PLAYER_HEIGHT >= GROUND) {
             yVel = JUMP_STRENGTH;
         }

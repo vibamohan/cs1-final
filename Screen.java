@@ -1,3 +1,4 @@
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Color;
@@ -9,6 +10,8 @@ import java.awt.Dimension;
 // import KeyListener classes to interpret key clicks
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.awt.event.KeyEvent;
 
 
@@ -18,19 +21,22 @@ public class Screen extends JPanel implements KeyListener{
     private Player player;
     private Level level;
 
-    public Screen(){
+    public Screen() throws IOException{
 
         setFocusable(true);
         setLayout(null);
 
         // initialize variables
         player = new Player(70, Player.GROUND - 2, new BufferedImage(WIDTH, HEIGHT, 1));
-        BufferedImage bushObs = new BufferedImage(492, 200, 1);
-        bushObs.
         Obstacle[] obs = new Obstacle[] {
-            new Obstacle(0, 0, new BufferedImage())
+            new Obstacle(0, 0, 30, 50,
+                ImageIO.read(new File("assets/images/bushl1.png"))),
+            new Obstacle(0, 0, 30, 50,
+                ImageIO.read(new File("assets/images/bushl1.png"))),
+            new Obstacle(0, 0, 30, 50,
+                ImageIO.read(new File("assets/images/bushl1.png")))
         };
-        level = new Level(10, new Obstacle[] {}, player, null, 50, 70);
+        level = new Level(10, obs, new GameImage(0, 0, 50, 10, ImageIO.read(new File("assets/images/bgl1.jpeg"))), player, null, 50, 70);
 
         // add Key listener
         addKeyListener(this);
@@ -39,41 +45,26 @@ public class Screen extends JPanel implements KeyListener{
     @Override
     public Dimension getPreferredSize() {
         //Sets the size of the panel
-            return new Dimension(800,600);
+        return new Dimension(800,350);
     }
    
     @Override
     public void paint(Graphics g) {
         super.paintComponent(g);
 
-
-
-
         // Put calls to draw in here
+        level.displayScene(g);
         player.draw(g);
-
-
-
-
-
-                /* Example of drawing a string on the JPanel. See the project description
-                   for how to change the font */
-                g.drawString("This is how you draw a string at position (70, 300)", 70, 300);
-
-
-
 
     }
    
     // This will be called when someone presses a key
     public void keyPressed(KeyEvent e){
-        // You can use this print to see what the keycodes are.
         System.out.println(e.getKeyCode());
 
         if (e.getKeyCode() == 38){   // up arrow
             player.jump();
         }
-
 
         repaint();
     }
@@ -84,22 +75,20 @@ public class Screen extends JPanel implements KeyListener{
     // animate objects
     public void animate(){
         while(true){
-            //pause for .01 second
             try {
                 Thread.sleep(10);    // 10 milliseconds
             } catch(InterruptedException ex) {
                 Thread.currentThread().interrupt();
             }
            
-            // Add calls to your move methods here
             player.gravityEffect();
+            // level.updateBG();
+            // level.cleanAndMoveObstacles();
+            // level.spawnObstacle();
             repaint();
         }
     }
 
-
-    // You must have method signatures for all methods that are
-    // part of an interface. Just leave these here.
     public void keyReleased(KeyEvent e){}
     public void keyTyped(KeyEvent e){}
 

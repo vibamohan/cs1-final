@@ -1,43 +1,35 @@
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.awt.image.IndexColorModel;
+
+import javax.imageio.ImageTypeSpecifier;
 
 
 public class GameImage {
-    public final BufferedImage image;
-    AffineTransform transformer = new AffineTransform();
+    public Image image;
     int x;
     int y;
-    int rotation;
     int width;
     int height;
-    int prevWidth;
-    int prevHeight;
 
-
-    public GameImage(int x, int y, BufferedImage image) {
+    public GameImage(int x, int y, int w, int h, Image image) {
         this.x = x;
         this.y = y;
-        this.image = image;
-        this.rotation = 0;
-        this.width = image.getWidth();
-        this.height = image.getHeight();
-        this.prevHeight = image.getHeight();
-        this.prevWidth = image.getWidth();
+        this.image = image.getScaledInstance(w, h, 1);
+        this.width = w;
+        this.height = h;
     }
 
 
     public void render(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        transformer.translate(this.x, this.y);
-        transformer.setToScale(width/prevWidth, width/prevHeight);
-
-
-        transformer.rotate(rotation, image.getWidth() / 2.0, image.getHeight() / 2.0);
         g2.drawImage(this.image, this.x, this.y, null);
     }
-
 
     public int[][] getLocationInfo() {
         return new int[][] {{x, y}, {width, height}};

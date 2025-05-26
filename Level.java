@@ -13,7 +13,7 @@ public class Level {
     int maxObstacleGap;
     int obstacleMoveSpeed = 0;
     public int score = 0;
-    public static int sf = 4;
+    public static int sf = 2;
     public static final int OBSTACLE_HEIGHT = 250;
 
     public Level(int speed, Obstacle[] obstacles, GameImage bg, Player player, Obstacle goal, int minGap, int maxGap) {
@@ -26,9 +26,9 @@ public class Level {
         this.maxObstacleGap = maxGap;
         this.obstacleMoveSpeed = speed;
         this.background = bg;
-        onField.add(new Obstacle(140, 250, 50*sf, 20*sf, possibleObstacles[0].obstacleImg.image));
-        onField.add(new Obstacle(140 + 200, 250, 50*sf, 20*sf, possibleObstacles[0].obstacleImg.image));
-        onField.add(new Obstacle(140 + 200 + 200, 250, 50*sf, 20*sf, possibleObstacles[0].obstacleImg.image));
+        onField.add(new Obstacle(140, 250, ObstacleProperties.L1_FLOWER.width, ObstacleProperties.L1_FLOWER.height, possibleObstacles[0].obstacleImg.image));
+        onField.add(new Obstacle(140 + 200, 250, ObstacleProperties.L1_FLOWER.width, ObstacleProperties.L1_FLOWER.height, possibleObstacles[0].obstacleImg.image));
+        onField.add(new Obstacle(140 + 200 + 200, 250, ObstacleProperties.L1_FLOWER.width, ObstacleProperties.L1_FLOWER.height, possibleObstacles[0].obstacleImg.image));
         // System.out.println("obstacle scale: " + onField.get(0).obstacleImg.width);
     }  
 
@@ -44,13 +44,10 @@ public class Level {
 
     public void spawnObstacle() {
         System.out.println("SPAWNING");
-        int newX;
         boolean buildNew = false;
         if (onField.size() == 0) {
-            newX = 140;
             buildNew = true;
         } else {
-            newX = onField.get(onField.size() - 1).obstacleImg.x + (int)(Math.random() * 100 + 1); 
             if (500 - onField.get(onField.size() - 1).obstacleImg.x > minObstacleGap) {
                 buildNew = true;
             }
@@ -81,6 +78,7 @@ public class Level {
                 player.collisions.add(i);
                 if (prevSize != player.collisions.size()) {
                     player.lives--;
+                    this.reset();
                 }
                 if (player.lives == 0) {
                     System.out.println("EXIT WITH STATUS LIVES = 0");
@@ -96,6 +94,15 @@ public class Level {
             System.out.println("I: " + i);
             i.render(g);
         }
+    }
+
+    public void reset() {
+        onField = new ArrayList<>();
+        onField.add(new Obstacle(140, 250, ObstacleProperties.L1_FLOWER.width, ObstacleProperties.L1_FLOWER.height, possibleObstacles[0].obstacleImg.image));
+        onField.add(new Obstacle(140 + 400, 250, ObstacleProperties.L1_FLOWER.width, ObstacleProperties.L1_FLOWER.height, possibleObstacles[0].obstacleImg.image));
+        onField.add(new Obstacle(140 + 400 + 400, 250, ObstacleProperties.L1_FLOWER.width, ObstacleProperties.L1_FLOWER.height, possibleObstacles[0].obstacleImg.image));
+        player.collisions.clear();
+        background.x = 0;
     }
 
 }

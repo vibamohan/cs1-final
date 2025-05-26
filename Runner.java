@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 public class Runner {
  
     public static void main(String[] args) throws IOException {
-        JFrame frame = new JFrame("Final Project");
+        JFrame frame = new JFrame("Serenade of Hours");
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

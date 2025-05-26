@@ -29,11 +29,11 @@ public class Screen extends JPanel implements KeyListener{
         // initialize variables
         player = new Player(70, Player.GROUND - 2, new BufferedImage(WIDTH, HEIGHT, 1));
         Obstacle[] obs = new Obstacle[] {
-            new Obstacle(0, 0, 50*Level.sf, 20*Level.sf,
+            new Obstacle(0, 0, ObstacleProperties.L1_FLOWER.width, ObstacleProperties.L1_FLOWER.height,
                 ImageIO.read(new File("assets/images/bushl1.png"))),
-            new Obstacle(0, 0, 50*Level.sf, 20*Level.sf,
+            new Obstacle(0, 0, ObstacleProperties.L1_FLOWER.width, ObstacleProperties.L1_FLOWER.height,
                 ImageIO.read(new File("assets/images/bushl1.png"))),
-            new Obstacle(0, 0, 50*Level.sf, 20*Level.sf,
+            new Obstacle(0, 0, ObstacleProperties.L1_FLOWER.width, ObstacleProperties.L1_FLOWER.height,
                 ImageIO.read(new File("assets/images/bushl1.png")))
         };
         level = new Level(40, obs, new GameImage(0, 0, 1600, 350, ImageIO.read(new File("assets/images/bgl1.png"))), player, null, 300, 240);
@@ -68,9 +68,6 @@ public class Screen extends JPanel implements KeyListener{
 
         repaint();
     }
-
-
-
 
     // animate objects
     public void animate(){

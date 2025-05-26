@@ -16,7 +16,7 @@ public class Player {
     public static final int PLAYER_HEIGHT = 50;
     public static final int GRAVITY = 1;
     public static final int JUMP_STRENGTH = -30;
-    public static final int TERMINAL_VELOCITY = 10;
+    public static final int TERMINAL_VELOCITY = 1;
 
     public Player(int x, int y, BufferedImage look) {
         player = new GameImage(x, y, 30, PLAYER_HEIGHT, look);
@@ -60,4 +60,5 @@ public class Player {
     public int[][] getLocationInfo() {
         return player.getLocationInfo();
     }
+
 }

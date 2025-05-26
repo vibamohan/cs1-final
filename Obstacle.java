@@ -18,10 +18,12 @@ enum ObstacleProperties {
 
 class Obstacle {
     GameImage obstacleImg;
+    ObstacleProperties dimensions;
 
 
-    public Obstacle(int x, int y, int w, int h, Image picture) {
-        this.obstacleImg = new GameImage(x, y, w, h, picture);
+    public Obstacle(int x, int y, ObstacleProperties props, Image picture) {
+        this.obstacleImg = new GameImage(x, y, props.width, props.height, picture);
+        this.dimensions = props;
     }
 
 

@@ -3,11 +3,6 @@ import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Dimension;
-
-
-
-
-// import KeyListener classes to interpret key clicks
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -29,11 +24,11 @@ public class Screen extends JPanel implements KeyListener{
         // initialize variables
         player = new Player(70, Player.GROUND - 2, new BufferedImage(WIDTH, HEIGHT, 1));
         Obstacle[] obs = new Obstacle[] {
-            new Obstacle(0, 0, ObstacleProperties.L1_FLOWER.width, ObstacleProperties.L1_FLOWER.height,
+            new Obstacle(0, 0, ObstacleProperties.L1_FLOWER,
                 ImageIO.read(new File("assets/images/bushl1.png"))),
-            new Obstacle(0, 0, ObstacleProperties.L1_FLOWER.width, ObstacleProperties.L1_FLOWER.height,
+            new Obstacle(0, 0, ObstacleProperties.L1_FLOWER,
                 ImageIO.read(new File("assets/images/bushl1.png"))),
-            new Obstacle(0, 0, ObstacleProperties.L1_FLOWER.width, ObstacleProperties.L1_FLOWER.height,
+            new Obstacle(0, 0, ObstacleProperties.L1_FLOWER,
                 ImageIO.read(new File("assets/images/bushl1.png")))
         };
         level = new Level(40, obs, new GameImage(0, 0, 1600, 350, ImageIO.read(new File("assets/images/bgl1.png"))), player, null, 300, 240);

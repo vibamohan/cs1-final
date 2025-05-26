@@ -13,7 +13,6 @@ public class Level {
     int maxObstacleGap;
     int obstacleMoveSpeed = 0;
     public int score = 0;
-    public static int sf = 2;
     public static final int OBSTACLE_HEIGHT = 250;
 
     public Level(int speed, Obstacle[] obstacles, GameImage bg, Player player, Obstacle goal, int minGap, int maxGap) {
@@ -26,9 +25,9 @@ public class Level {
         this.maxObstacleGap = maxGap;
         this.obstacleMoveSpeed = speed;
         this.background = bg;
-        onField.add(new Obstacle(140, 250, ObstacleProperties.L1_FLOWER.width, ObstacleProperties.L1_FLOWER.height, possibleObstacles[0].obstacleImg.image));
-        onField.add(new Obstacle(140 + 200, 250, ObstacleProperties.L1_FLOWER.width, ObstacleProperties.L1_FLOWER.height, possibleObstacles[0].obstacleImg.image));
-        onField.add(new Obstacle(140 + 200 + 200, 250, ObstacleProperties.L1_FLOWER.width, ObstacleProperties.L1_FLOWER.height, possibleObstacles[0].obstacleImg.image));
+        onField.add(new Obstacle(140, 250, ObstacleProperties.L1_FLOWER, possibleObstacles[0].obstacleImg.image));
+        onField.add(new Obstacle(140 + 200, 250,ObstacleProperties.L1_FLOWER, possibleObstacles[0].obstacleImg.image));
+        onField.add(new Obstacle(140 + 200 + 200, 250, ObstacleProperties.L1_FLOWER, possibleObstacles[0].obstacleImg.image));
         // System.out.println("obstacle scale: " + onField.get(0).obstacleImg.width);
     }  
 
@@ -55,7 +54,7 @@ public class Level {
 
         if (buildNew) {
             Obstacle chosenObstacle = possibleObstacles[(int) (Math.random() * possibleObstacles.length)];
-            Obstacle obst = new Obstacle(500+ (int) (Math.random() * 30 + 1), OBSTACLE_HEIGHT, chosenObstacle.obstacleImg.width, chosenObstacle.obstacleImg.height, chosenObstacle.obstacleImg.image);
+            Obstacle obst = new Obstacle(500+ (int) (Math.random() * 30 + 1), OBSTACLE_HEIGHT, ObstacleProperties.L1_FLOWER,chosenObstacle.obstacleImg.image);
             onField.add(obst);
         }
     }
@@ -71,6 +70,7 @@ public class Level {
             }
         }
 
+        // collision detection
         for (Obstacle i : onField) {
             if (i.isColliding(player)) {
                 System.out.println("COLLISION HAPPENED! ");
@@ -98,9 +98,9 @@ public class Level {
 
     public void reset() {
         onField = new ArrayList<>();
-        onField.add(new Obstacle(140, 250, ObstacleProperties.L1_FLOWER.width, ObstacleProperties.L1_FLOWER.height, possibleObstacles[0].obstacleImg.image));
-        onField.add(new Obstacle(140 + 400, 250, ObstacleProperties.L1_FLOWER.width, ObstacleProperties.L1_FLOWER.height, possibleObstacles[0].obstacleImg.image));
-        onField.add(new Obstacle(140 + 400 + 400, 250, ObstacleProperties.L1_FLOWER.width, ObstacleProperties.L1_FLOWER.height, possibleObstacles[0].obstacleImg.image));
+        onField.add(new Obstacle(140, 250, ObstacleProperties.L1_FLOWER, possibleObstacles[0].obstacleImg.image));
+        onField.add(new Obstacle(140 + 400, 250, ObstacleProperties.L1_FLOWER, possibleObstacles[0].obstacleImg.image));
+        onField.add(new Obstacle(140 + 400 + 400, 250, ObstacleProperties.L1_FLOWER, possibleObstacles[0].obstacleImg.image));
         player.collisions.clear();
         background.x = 0;
     }

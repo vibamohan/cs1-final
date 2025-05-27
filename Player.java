@@ -48,6 +48,18 @@ public class Player {
         }
     }
 
+    public void moveRight() {
+        if (player.x < 780) {
+            player.x+=4;
+        }
+    }
+
+    public void moveLeft() {
+        if (player.x > 20) {
+            player.x-=4;
+        }
+    }
+
     public void gravityEffect() {
         if (player.y + PLAYER_HEIGHT < GROUND) {
             yVel += GRAVITY;
@@ -60,5 +72,7 @@ public class Player {
     public int[][] getLocationInfo() {
         return player.getLocationInfo();
     }
+
+    
 
 }

@@ -14,7 +14,10 @@ public class Screen extends JPanel implements KeyListener{
 
     // instance variables
     private Player player;
-    private Level level;
+    private Level level1;
+    private Level level2;
+    private Level level3;
+    private Level curLevel;
 
     public Screen() throws IOException{
 
@@ -23,7 +26,7 @@ public class Screen extends JPanel implements KeyListener{
 
         // initialize variables
         player = new Player(70, Player.GROUND - 2, new BufferedImage(WIDTH, HEIGHT, 1));
-        Obstacle[] obs = new Obstacle[] {
+        Obstacle[] obs1 = new Obstacle[] {
             new Obstacle(0, 0, ObstacleProperties.L1_FLOWER,
                 ImageIO.read(new File("assets/images/bushl1.png"))),
             new Obstacle(0, 0, ObstacleProperties.L1_FLOWER,
@@ -31,7 +34,11 @@ public class Screen extends JPanel implements KeyListener{
             new Obstacle(0, 0, ObstacleProperties.L1_FLOWER,
                 ImageIO.read(new File("assets/images/bushl1.png")))
         };
-        level = new Level(40, obs, new GameImage(0, 0, 1600, 350, ImageIO.read(new File("assets/images/bgl1.png"))), player, null, 300, 240);
+        level1 = new Level(3, obs1, new GameImage(0, 0, 1600, 350, ImageIO.read(new File("assets/images/bgl1.png"))), player, new Obstacle(300, 300, ObstacleProperties.L1_FLOWER,
+                ImageIO.read(new File("assets/images/goco.png"))), 500, 240, 1000);
+        level2 = new Level(3, obs1, new GameImage(0, 0, 1600, 350, ImageIO.read(new File("assets/images/bgl1.png"))), player, null, 300, 240, 3000);
+        level3 = new Level(3, obs1, new GameImage(0, 0, 1600, 350, ImageIO.read(new File("assets/images/bgl1.png"))), player, null, 300, 240, 3000);
+        curLevel = level1;
 
         // add Key listener
         addKeyListener(this);
@@ -48,17 +55,41 @@ public class Screen extends JPanel implements KeyListener{
         super.paintComponent(g);
 
         // Put calls to draw in here
-        level.displayScene(g);
+        curLevel.displayScene(g);
         player.draw(g);
 
     }
    
     // This will be called when someone presses a key
     public void keyPressed(KeyEvent e){
+
         System.out.println(e.getKeyCode());
+
+        // When return is pressed, update levels ! 
+        if (e.getKeyCode() == 10) /* return */ {
+            curLevel = level1;
+            /* progress the levels */
+            if (level1.levelComplete()) {
+                curLevel = level2;
+                if (level2.levelComplete()) {
+                    curLevel = level3;
+                    if (level3.levelComplete()) {
+                        curLevel = null;
+                    }
+                }
+            }
+        }
 
         if (e.getKeyCode() == 38){   // up arrow
             player.jump();
+        }
+
+        if (e.getKeyCode() == 37 && curLevel.levelComplete()) {
+            player.moveLeft();
+        }
+
+        if (e.getKeyCode() == 39 && curLevel.levelComplete()) {
+            player.moveRight();
         }
 
         repaint();
@@ -74,9 +105,10 @@ public class Screen extends JPanel implements KeyListener{
             }
            
             player.gravityEffect();
-            level.updateBG();
-            level.cleanAndMoveObstacles();
-            level.spawnObstacle();
+            curLevel.updateBG();
+            curLevel.cleanAndMoveObstacles();
+            curLevel.spawnObstacle();
+            curLevel.spawnGoal();
             repaint();
         }
     }

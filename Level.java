@@ -2,6 +2,9 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
 public class Level {
     int speed;
     Obstacle[] possibleObstacles;
@@ -18,6 +21,7 @@ public class Level {
     public int SPAWN_THRESHOLD = 100;
     public boolean scrolling = true;
     public boolean horizontalControl = false;
+    public boolean resetting = false;
 
     public Level(
             int speed,
@@ -56,6 +60,7 @@ public class Level {
     public void updateBG() {
         // System.out.println("UPDATE BG W " + background.x);
         if (scrolling) {
+            // System.out.println("UpdatingBG RN");
             background.x -= speed;
             if (background.x <= -800) {
                 background.x = 0;
@@ -102,11 +107,12 @@ public class Level {
         }
 
         // collision detection
-        for (Obstacle i : onField) {
-            if (i.isColliding(player)) {
+        for (int i = 0; i < onField.size(); i++) {
+            Obstacle cur = onField.get(i);
+            if (cur.isColliding(player)) {
                 // System.out.println("COLLISION HAPPENED! ");
                 int prevSize = player.collisions.size();
-                player.collisions.add(i);
+                player.collisions.add(cur);
                 if (prevSize != player.collisions.size()) {
                     player.lives--;
                     this.reset();
@@ -116,20 +122,23 @@ public class Level {
                 }
             }
         }
-    }
-
-    public void displayScene(Graphics g) {
-        synchronized (onField) {
-            for (Obstacle i : onField) {
-                i.render(g);
-            }
-        }
 
         spawnGoal();
     }
 
+    public void displayScene(Graphics g) {
+        background.render(g);
+        synchronized (onField) {
+            for (int i = 0; i < onField.size(); i++) {
+                onField.get(i).render(g);
+            }
+        }
+    }
+
     public void reset() {
-        onField = new ArrayList<>();
+        resetting = true;
+        
+        onField.clear();
         onField.add(
                 new Obstacle(
                         140, 250, ObstacleProperties.L1_FLOWER, possibleObstacles[0].obstacleImg.image));
@@ -144,6 +153,8 @@ public class Level {
                         possibleObstacles[0].obstacleImg.image));
         player.collisions.clear();
         background.x = 0;
+        this.score = 0;
+        
     }
 
     public void spawnGoal() {

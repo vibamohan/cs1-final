@@ -1,5 +1,12 @@
 import javax.imageio.ImageIO;
+// import javax.management.timer.Timer;
+// import javax.management.timer.TimerNotification;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.Timer;
+
+
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -7,6 +14,8 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 
@@ -18,6 +27,8 @@ public class Screen extends JPanel implements KeyListener{
     private Level level2;
     private Level level3;
     private Level curLevel;
+    private Timer timer = new Timer(3000, null);
+    
 
     public Screen() throws IOException{
 
@@ -52,11 +63,31 @@ public class Screen extends JPanel implements KeyListener{
    
     @Override
     public void paint(Graphics g) {
-        super.paintComponent(g);
-
         // Put calls to draw in here
+        super.paintComponent(g);
         curLevel.displayScene(g);
         player.draw(g);
+
+        if (curLevel.resetting) {
+            System.out.println("This reset logic has ran");
+            JLabel text = new JLabel("Obstacle hit -- resetting now");
+            System.out.println("text: " + text.getX() + ", " + text.getY());
+            Screen scr = this;
+            System.out.println("before adding: " + scr.getComponentCount());
+            this.add(text);
+            System.out.println("after adding: " + scr.getComponentCount());
+            ActionListener taskPerformer = new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    System.out.println("Performing reset action");
+                    scr.remove(text);
+                }
+            };
+
+            timer.addActionListener(taskPerformer);
+            timer.setRepeats(false);
+            timer.start();
+            curLevel.resetting = false;
+        }
 
     }
    
@@ -103,7 +134,6 @@ public class Screen extends JPanel implements KeyListener{
             } catch(InterruptedException ex) {
                 Thread.currentThread().interrupt();
             }
-           
             player.gravityEffect();
             curLevel.updateBG();
             curLevel.cleanAndMoveObstacles();

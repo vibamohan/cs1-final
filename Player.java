@@ -50,13 +50,13 @@ public class Player {
 
     public void moveRight() {
         if (player.x < 780) {
-            player.x+=4;
+            player.x+=9;
         }
     }
 
     public void moveLeft() {
         if (player.x > 20) {
-            player.x-=4;
+            player.x-=9;
         }
     }
 

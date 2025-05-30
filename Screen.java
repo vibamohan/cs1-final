@@ -7,7 +7,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
 
-
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -19,8 +18,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-
-public class Screen extends JPanel implements KeyListener{
+public class Screen extends JPanel implements KeyListener {
 
     // instance variables
     private Player player;
@@ -29,9 +27,8 @@ public class Screen extends JPanel implements KeyListener{
     private Level level3;
     private Level curLevel;
     private Timer timer = new Timer(3000, null);
-    
 
-    public Screen() throws IOException{
+    public Screen() throws IOException {
 
         setFocusable(true);
         setLayout(null);
@@ -39,17 +36,21 @@ public class Screen extends JPanel implements KeyListener{
         // initialize variables
         player = new Player(70, Player.GROUND - 2, new BufferedImage(WIDTH, HEIGHT, 1));
         Obstacle[] obs1 = new Obstacle[] {
-            new Obstacle(0, 0, ObstacleProperties.L1_FLOWER,
-                ImageIO.read(new File("assets/images/bushl1.png"))),
-            new Obstacle(0, 0, ObstacleProperties.L1_FLOWER,
-                ImageIO.read(new File("assets/images/bushl1.png"))),
-            new Obstacle(0, 0, ObstacleProperties.L1_FLOWER,
-                ImageIO.read(new File("assets/images/bushl1.png")))
+                new Obstacle(0, 0, ObstacleProperties.L1_FLOWER,
+                        ImageIO.read(new File("assets/images/bushl1.png"))),
+                new Obstacle(0, 0, ObstacleProperties.L1_FLOWER,
+                        ImageIO.read(new File("assets/images/bushl1.png"))),
+                new Obstacle(0, 0, ObstacleProperties.L1_FLOWER,
+                        ImageIO.read(new File("assets/images/bushl1.png")))
         };
-        level1 = new Level(3, obs1, new GameImage(0, 0, 1600, 350, ImageIO.read(new File("assets/images/bgl1.png"))), player, new Obstacle(300, 300, ObstacleProperties.L1_FLOWER,
-                ImageIO.read(new File("assets/images/goco.png"))), 500, 240, 1000);
-        level2 = new Level(3, obs1, new GameImage(0, 0, 1600, 350, ImageIO.read(new File("assets/images/bgl1.png"))), player, null, 300, 240, 3000);
-        level3 = new Level(3, obs1, new GameImage(0, 0, 1600, 350, ImageIO.read(new File("assets/images/bgl1.png"))), player, null, 300, 240, 3000);
+        level1 = new Level(3, obs1, new GameImage(0, 0, 1600, 350, ImageIO.read(new File("assets/images/bgl1.png"))),
+                player, new Obstacle(300, 300, ObstacleProperties.L1_FLOWER,
+                        ImageIO.read(new File("assets/images/goco.png"))),
+                500, 240, 1000);
+        level2 = new Level(3, obs1, new GameImage(0, 0, 1600, 350, ImageIO.read(new File("assets/images/bgl1.png"))),
+                player, null, 300, 240, 3000);
+        level3 = new Level(3, obs1, new GameImage(0, 0, 1600, 350, ImageIO.read(new File("assets/images/bgl1.png"))),
+                player, null, 300, 240, 3000);
         curLevel = level1;
 
         // add Key listener
@@ -58,10 +59,10 @@ public class Screen extends JPanel implements KeyListener{
 
     @Override
     public Dimension getPreferredSize() {
-        //Sets the size of the panel
-        return new Dimension(800,350);
+        // Sets the size of the panel
+        return new Dimension(800, 350);
     }
-   
+
     @Override
     public void paint(Graphics g) {
         // Put calls to draw in here
@@ -69,37 +70,14 @@ public class Screen extends JPanel implements KeyListener{
         curLevel.displayScene(g);
         player.draw(g);
 
-        if (curLevel.resetting) {
-            System.out.println("This reset logic has ran");
-            // JLabel text = new JLabel("Obstacle hit -- resetting now");
-            // System.out.println("text: " + text.getX() + ", " + text.getY());
-            // Screen scr = this;
-            // System.out.println("before adding: " + scr.getComponentCount());
-            // this.add(text);
-            // System.out.println("after adding: " + scr.getComponentCount());
-            // ActionListener taskPerformer = new ActionListener() {
-            //     public void actionPerformed(ActionEvent evt) {
-            //         System.out.println("Performing reset action");
-            //         scr.remove(text);
-            //     }
-            // };
-
-            // timer.addActionListener(taskPerformer);
-            // timer.setRepeats(false);
-            // timer.start();
-
-            JOptionPane.showMessageDialog(this, "Level resetting due to collision with obstacle", "Reset Notification", JOptionPane.INFORMATION_MESSAGE);
-            curLevel.resetting = false;
-        }
-
     }
-   
+
     // This will be called when someone presses a key
-    public void keyPressed(KeyEvent e){
+    public void keyPressed(KeyEvent e) {
 
         System.out.println(e.getKeyCode());
 
-        // When return is pressed, update levels ! 
+        // When return is pressed, update levels !
         if (e.getKeyCode() == 10) /* return */ {
             curLevel = level1;
             /* progress the levels */
@@ -114,7 +92,7 @@ public class Screen extends JPanel implements KeyListener{
             }
         }
 
-        if (e.getKeyCode() == 38){   // up arrow
+        if (e.getKeyCode() == 38) { // up arrow
             player.jump();
         }
 
@@ -130,13 +108,22 @@ public class Screen extends JPanel implements KeyListener{
     }
 
     // animate objects
-    public void animate(){
-        while(true) {
+    public void animate() {
+        while (true) {
             try {
-                Thread.sleep(20);    // 10 milliseconds
-            } catch(InterruptedException ex) {
+                Thread.sleep(20); // 10 milliseconds
+            } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
             }
+
+            if (curLevel.resetting) {
+                System.out.println("This reset logic has ran");
+
+                JOptionPane.showMessageDialog(this, "Level resetting due to collision with obstacle",
+                        "Reset Notification", JOptionPane.INFORMATION_MESSAGE);
+                curLevel.resetting = false;
+            }
+
             player.gravityEffect();
             curLevel.updateBG();
             curLevel.cleanAndMoveObstacles();
@@ -146,7 +133,10 @@ public class Screen extends JPanel implements KeyListener{
         }
     }
 
-    public void keyReleased(KeyEvent e){}
-    public void keyTyped(KeyEvent e){}
+    public void keyReleased(KeyEvent e) {
+    }
+
+    public void keyTyped(KeyEvent e) {
+    }
 
 }

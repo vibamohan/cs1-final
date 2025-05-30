@@ -110,6 +110,7 @@ public class Level {
                     this.reset();
                 }
                 player.collisions.add(cur);
+                System.out.println(player.collisions);
                 if (player.lives == 0) {
                     // System.out.println("EXIT WITH STATUS LIVES = 0");
                 }
@@ -129,22 +130,13 @@ public class Level {
     }
 
     public void reset() {
+        System.out.println("GAME RESET ");
         resetting = true;
         
         onField.clear();
-        onField.add(
-                new Obstacle(
-                        140, 250, ObstacleProperties.L1_FLOWER, possibleObstacles[0].obstacleImg.image));
-        onField.add(
-                new Obstacle(
-                        140 + 400, 250, ObstacleProperties.L1_FLOWER, possibleObstacles[0].obstacleImg.image));
-        onField.add(
-                new Obstacle(
-                        140 + 400 + 400,
-                        250,
-                        ObstacleProperties.L1_FLOWER,
-                        possibleObstacles[0].obstacleImg.image));
         player.collisions.clear();
+        player.player.y = Player.GROUND - 2;
+
         background.x = 0;
         this.score = 0;
         

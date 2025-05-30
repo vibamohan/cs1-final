@@ -73,14 +73,7 @@ public class Level {
         // System.out.println("SPAWNING");
         if (!scrolling)
             return;
-        boolean buildNew = false;
-        if (onField.size() == 0) {
-            buildNew = true;
-        } else {
-            if (500 - onField.get(onField.size() - 1).obstacleImg.x > minObstacleGap) {
-                buildNew = true;
-            }
-        }
+        boolean buildNew = onField.size() == 0 || 500 - onField.get(onField.size() - 1).obstacleImg.x > minObstacleGap;
 
         if (buildNew) {
             Obstacle chosenObstacle = possibleObstacles[(int) (Math.random() * possibleObstacles.length)];
@@ -111,12 +104,12 @@ public class Level {
             Obstacle cur = onField.get(i);
             if (cur.isColliding(player)) {
                 // System.out.println("COLLISION HAPPENED! ");
-                int prevSize = player.collisions.size();
-                player.collisions.add(cur);
-                if (prevSize != player.collisions.size()) {
+                // int prevSize = player.collisions.size();
+                if (!player.collisions.contains(cur)) {
                     player.lives--;
                     this.reset();
                 }
+                player.collisions.add(cur);
                 if (player.lives == 0) {
                     // System.out.println("EXIT WITH STATUS LIVES = 0");
                 }
@@ -159,7 +152,7 @@ public class Level {
 
     public void spawnGoal() {
         // System.out.println("spawned!");
-        if (this.levelComplete()) {
+        if (levelComplete()) {
             // System.out.println("LEVEL COMPLETE");
             onField.add(goal);
             horizontalControl = true;

@@ -2,6 +2,7 @@ import javax.imageio.ImageIO;
 // import javax.management.timer.Timer;
 // import javax.management.timer.TimerNotification;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
@@ -70,22 +71,24 @@ public class Screen extends JPanel implements KeyListener{
 
         if (curLevel.resetting) {
             System.out.println("This reset logic has ran");
-            JLabel text = new JLabel("Obstacle hit -- resetting now");
-            System.out.println("text: " + text.getX() + ", " + text.getY());
-            Screen scr = this;
-            System.out.println("before adding: " + scr.getComponentCount());
-            this.add(text);
-            System.out.println("after adding: " + scr.getComponentCount());
-            ActionListener taskPerformer = new ActionListener() {
-                public void actionPerformed(ActionEvent evt) {
-                    System.out.println("Performing reset action");
-                    scr.remove(text);
-                }
-            };
+            // JLabel text = new JLabel("Obstacle hit -- resetting now");
+            // System.out.println("text: " + text.getX() + ", " + text.getY());
+            // Screen scr = this;
+            // System.out.println("before adding: " + scr.getComponentCount());
+            // this.add(text);
+            // System.out.println("after adding: " + scr.getComponentCount());
+            // ActionListener taskPerformer = new ActionListener() {
+            //     public void actionPerformed(ActionEvent evt) {
+            //         System.out.println("Performing reset action");
+            //         scr.remove(text);
+            //     }
+            // };
 
-            timer.addActionListener(taskPerformer);
-            timer.setRepeats(false);
-            timer.start();
+            // timer.addActionListener(taskPerformer);
+            // timer.setRepeats(false);
+            // timer.start();
+
+            JOptionPane.showMessageDialog(this, "Level resetting due to collision with obstacle", "Reset Notification", JOptionPane.INFORMATION_MESSAGE);
             curLevel.resetting = false;
         }
 
@@ -128,7 +131,7 @@ public class Screen extends JPanel implements KeyListener{
 
     // animate objects
     public void animate(){
-        while(true){
+        while(true) {
             try {
                 Thread.sleep(20);    // 10 milliseconds
             } catch(InterruptedException ex) {

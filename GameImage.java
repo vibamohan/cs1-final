@@ -34,4 +34,13 @@ public class GameImage {
     public int[][] getLocationInfo() {
         return new int[][] {{x, y}, {width, height}};
     }
+
+    public int hashCode() {
+        return image.hashCode() + (int) (Math.random() * 8 + 1);
+    }
+
+    public boolean equals(Object oth) {
+        if (!(oth instanceof GameImage)) return false;
+        return image.hashCode() == oth.hashCode();
+    }
 }

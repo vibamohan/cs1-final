@@ -53,6 +53,10 @@ public class Screen extends JPanel implements KeyListener {
                 player, null, 300, 240, 3000);
         curLevel = level1;
 
+        JOptionPane.showMessageDialog(this,
+                "This is an endless runner \n Use the up and down arrow keys to move around the game, and left and right when the goal is reached \n Avoid the obstacles. You have 3 lives a level and they reset when a level is reset or progressed \n Help these animals get to their destinations and have fun!",
+                "README Instructions", JOptionPane.INFORMATION_MESSAGE);
+
         // add Key listener
         addKeyListener(this);
     }
@@ -64,7 +68,7 @@ public class Screen extends JPanel implements KeyListener {
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
         // Put calls to draw in here
         super.paintComponent(g);
         curLevel.displayScene(g);
@@ -95,7 +99,7 @@ public class Screen extends JPanel implements KeyListener {
 
         if (curLevel != levelBefore) {
             JOptionPane.showMessageDialog(this, "You have unlocked the next level!",
-                        "Progression Notification", JOptionPane.INFORMATION_MESSAGE);
+                    "Progression Notification", JOptionPane.INFORMATION_MESSAGE);
         }
 
         if (e.getKeyCode() == 38) { // up arrow

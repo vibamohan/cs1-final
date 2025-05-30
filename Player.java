@@ -63,9 +63,7 @@ public class Player {
     public void gravityEffect() {
         if (player.y + PLAYER_HEIGHT < GROUND) {
             yVel += GRAVITY;
-            if (yVel > TERMINAL_VELOCITY) {
-                yVel = TERMINAL_VELOCITY;
-            }
+            yVel--;
         }
     }
 

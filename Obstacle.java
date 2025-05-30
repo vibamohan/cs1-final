@@ -37,14 +37,4 @@ class Obstacle {
     void render(Graphics g) {
         obstacleImg.render(g);
     }
-
-    public int hashCode() {
-        return obstacleImg.hashCode();
-    }
-
-    public boolean equals(Object oth) {
-        if (!(oth instanceof Obstacle)) return false;
-        Obstacle other = (Obstacle) oth;
-        return obstacleImg.equals(other.obstacleImg);
-    }
 }

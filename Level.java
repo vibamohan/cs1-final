@@ -1,3 +1,5 @@
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,8 @@ public class Level {
     public boolean scrolling = true;
     public boolean horizontalControl = false;
     public boolean resetting = false;
+    public Font lifeFont = new Font("Serif", Font.BOLD, 24);
+    
 
     public Level(
             int speed,
@@ -32,6 +36,7 @@ public class Level {
             int minGap,
             int maxGap,
             int threshold) {
+        player.lives = 3;
         this.speed = speed - 2;
         this.possibleObstacles = obstacles;
         this.player = player;
@@ -41,18 +46,6 @@ public class Level {
         this.maxObstacleGap = maxGap;
         this.obstacleMoveSpeed = speed;
         this.background = bg;
-        onField.add(
-                new Obstacle(
-                        140, 250, ObstacleProperties.L1_FLOWER, possibleObstacles[0].obstacleImg.image));
-        onField.add(
-                new Obstacle(
-                        140 + 200, 250, ObstacleProperties.L1_FLOWER, possibleObstacles[0].obstacleImg.image));
-        onField.add(
-                new Obstacle(
-                        140 + 200 + 200,
-                        250,
-                        ObstacleProperties.L1_FLOWER,
-                        possibleObstacles[0].obstacleImg.image));
         LEVEL_COMPLETE_THRESHOLD = threshold;
         // System.out.println("obstacle scale: " + onField.get(0).obstacleImg.width);
     }
@@ -106,13 +99,12 @@ public class Level {
                 // System.out.println("COLLISION HAPPENED! ");
                 // int prevSize = player.collisions.size();
                 if (!player.collisions.contains(cur)) {
+                    System.out.println("life -- ");
                     player.lives--;
-                    this.reset();
                 }
                 player.collisions.add(cur);
-                System.out.println(player.collisions);
                 if (player.lives == 0) {
-                    // System.out.println("EXIT WITH STATUS LIVES = 0");
+                    this.reset();
                 }
             }
         }
@@ -127,6 +119,31 @@ public class Level {
                 onField.get(i).render(g);
             }
         }
+
+        String toDraw = "";
+        switch (player.lives) {
+            case 0: 
+                toDraw = "❌ ❌ ❌";
+            case 1:
+                toDraw = "❌ ❌ ❤️";
+                break;
+            case 2:
+                toDraw = "❌ ❤️ ❤️";
+                break;
+            case 3: 
+                toDraw = "❤️ ❤️ ❤️";
+                break;
+            default: 
+                toDraw = "❌ ❌ ❌";
+        }
+
+        g.setFont(lifeFont);
+        g.setColor(Color.red);
+        g.drawString(toDraw, 50, 50);
+
+        g.setColor(Color.PINK);
+        g.drawString("Score: " + String.valueOf(this.score), 200, 50);
+
     }
 
     public void reset() {
@@ -138,6 +155,7 @@ public class Level {
         player.player.y = Player.GROUND - 2;
 
         background.x = 0;
+        player.lives = 3;
         this.score = 0;
         
     }

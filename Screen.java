@@ -77,6 +77,7 @@ public class Screen extends JPanel implements KeyListener {
 
         System.out.println(e.getKeyCode());
 
+        Level levelBefore = curLevel;
         // When return is pressed, update levels !
         if (e.getKeyCode() == 10) /* return */ {
             curLevel = level1;
@@ -90,6 +91,11 @@ public class Screen extends JPanel implements KeyListener {
                     }
                 }
             }
+        }
+
+        if (curLevel != levelBefore) {
+            JOptionPane.showMessageDialog(this, "You have unlocked the next level!",
+                        "Progression Notification", JOptionPane.INFORMATION_MESSAGE);
         }
 
         if (e.getKeyCode() == 38) { // up arrow

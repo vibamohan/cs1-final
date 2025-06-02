@@ -13,7 +13,7 @@ public class Player {
 
     // Constants
     public static final int GROUND = 300;
-    public static final int PLAYER_HEIGHT = 50;
+    public static final int PLAYER_HEIGHT = 100;
     public static final int GRAVITY = 1;
     public static final int JUMP_STRENGTH = -30;
     public static final int TERMINAL_VELOCITY = 3;
@@ -36,8 +36,8 @@ public class Player {
 
         // System.out.println("Y: " + player.y + " , yVel = " + yVel);
 
-        g.setColor(new Color(255, 0, 0));
-        g.fillRect(player.x, player.y, 50, PLAYER_HEIGHT);
+        // g.setColor(new Color(255, 0, 0));
+        // g.fillRect(player.x, player.y, 50, PLAYER_HEIGHT);
         player.render(g);
     }
 

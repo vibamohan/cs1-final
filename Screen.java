@@ -1,4 +1,9 @@
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 // import javax.management.timer.Timer;
 // import javax.management.timer.TimerNotification;
 import javax.swing.JLabel;
@@ -17,6 +22,8 @@ import java.io.IOException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.applet.*;
+import java.net.*;
 
 public class Screen extends JPanel implements KeyListener {
 
@@ -26,7 +33,6 @@ public class Screen extends JPanel implements KeyListener {
     private Level level2;
     private Level level3;
     private Level curLevel;
-    private Timer timer = new Timer(3000, null);
 
     public Screen() throws IOException {
 
@@ -36,22 +42,50 @@ public class Screen extends JPanel implements KeyListener {
         // initialize variables
         player = new Player(70, Player.GROUND - 2, new BufferedImage(WIDTH, HEIGHT, 1));
         Obstacle[] obs1 = new Obstacle[] {
-                new Obstacle(0, 0, ObstacleProperties.L1_FLOWER,
+                new Obstacle(0, ObstacleProperties.L1_FLOWER,
                         ImageIO.read(new File("assets/images/bushl1.png"))),
-                new Obstacle(0, 0, ObstacleProperties.L1_FLOWER,
+                new Obstacle(0, ObstacleProperties.L1_FLOWER,
                         ImageIO.read(new File("assets/images/bushl1.png"))),
-                new Obstacle(0, 0, ObstacleProperties.L1_FLOWER,
+                new Obstacle(0, ObstacleProperties.L1_FLOWER,
                         ImageIO.read(new File("assets/images/bushl1.png")))
         };
+
+        Obstacle[] obs2 = new Obstacle[] {
+                new Obstacle(0, ObstacleProperties.CACTUS,
+                        ImageIO.read(new File("assets/images/cactil2.png"))),
+                new Obstacle(0, ObstacleProperties.CACTUS,
+                        ImageIO.read(new File("assets/images/cactil2.png"))),
+                new Obstacle(0, ObstacleProperties.CACTUS,
+                        ImageIO.read(new File("assets/images/cactil2.png")))
+        };
+
+        Obstacle[] obs3 = new Obstacle[] {
+                new Obstacle(0, ObstacleProperties.SNOWMAN,
+                        ImageIO.read(new File("assets/images/snowmen.png"))),
+                new Obstacle(0, ObstacleProperties.SNOWMAN,
+                        ImageIO.read(new File("assets/images/snowmen.png"))),
+                new Obstacle(0, ObstacleProperties.SNOWMAN,
+                        ImageIO.read(new File("assets/images/snowmen.png")))
+        };
+
+        Obstacle goal = new Obstacle(300, ObstacleProperties.L1_FLOWER,
+                ImageIO.read(new File("assets/images/goco.png")));
+
         level1 = new Level(3, obs1, new GameImage(0, 0, 1600, 350, ImageIO.read(new File("assets/images/bgl1.png"))),
-                player, new Obstacle(300, 300, ObstacleProperties.L1_FLOWER,
-                        ImageIO.read(new File("assets/images/goco.png"))),
-                500, 240, 1000);
-        level2 = new Level(3, obs1, new GameImage(0, 0, 1600, 350, ImageIO.read(new File("assets/images/bgl1.png"))),
-                player, null, 300, 240, 3000);
-        level3 = new Level(3, obs1, new GameImage(0, 0, 1600, 350, ImageIO.read(new File("assets/images/bgl1.png"))),
-                player, null, 300, 240, 3000);
-        curLevel = level1;
+                new GameImage(player.player.x, 400, 100, 100, ImageIO.read(new File("assets/images/playerbunny.png"))),
+                player, goal, 500, 240, 1000);
+
+        level2 = new Level(3, obs2, new GameImage(0, 0, 1600, 350, ImageIO.read(new File("assets/images/bgl22.png"))),
+                new GameImage(player.player.x, player.player.y, 100, 100,
+                        ImageIO.read(new File("assets/images/playerbunny.png"))),
+                player, goal, 500, 240, 1000);
+
+        level3 = new Level(3, obs3, new GameImage(0, 0, 1600, 350, ImageIO.read(new File("assets/images/bgl33.png"))),
+                new GameImage(player.player.x, player.player.y, 100, 100,
+                        ImageIO.read(new File("assets/images/playerbunny.png"))),
+                player, goal, 500, 240, 1000);
+
+        curLevel = level3;
 
         JOptionPane.showMessageDialog(this,
                 "This is an endless runner \n Use the up and down arrow keys to move around the game, and left and right when the goal is reached \n Avoid the obstacles. You have 3 lives a level and they reset when a level is reset or progressed \n Help these animals get to their destinations and have fun!",
@@ -59,6 +93,7 @@ public class Screen extends JPanel implements KeyListener {
 
         // add Key listener
         addKeyListener(this);
+
     }
 
     @Override
@@ -129,7 +164,8 @@ public class Screen extends JPanel implements KeyListener {
             if (curLevel.resetting) {
                 System.out.println("This reset logic has ran");
 
-                JOptionPane.showMessageDialog(this, "Level resetting due to collision with obstacle",
+                JOptionPane.showMessageDialog(this,
+                        "No more hearts remaining! You have collided with obstacles 3 times..",
                         "Reset Notification", JOptionPane.INFORMATION_MESSAGE);
                 curLevel.resetting = false;
             }

@@ -3,15 +3,18 @@ import java.awt.Image;
 
 // TODO: Fill with real properties 
 enum ObstacleProperties {
-    L1_FLOWER(120, 60),
-    L1_PINEAPPLE(1, 2);
+    L1_FLOWER(120, 60, 250),
+    CACTUS(100, 100, 250 ),
+    SNOWMAN(55, 110, 210);
 
     public int width;
     public int height;
+    public int y;
 
-    ObstacleProperties(int width, int height) {
+    ObstacleProperties(int width, int height, int y) {
         this.width = width;
         this.height = height;
+        this.y = y;
     }
 }
 
@@ -19,8 +22,8 @@ class Obstacle {
     GameImage obstacleImg;
     ObstacleProperties dimensions;
 
-    public Obstacle(int x, int y, ObstacleProperties props, Image picture) {
-        this.obstacleImg = new GameImage(x, y, props.width, props.height, picture);
+    public Obstacle(int x, ObstacleProperties props, Image picture) {
+        this.obstacleImg = new GameImage(x, props.y, props.width, props.height, picture);
         this.dimensions = props;
     }
 

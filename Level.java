@@ -18,19 +18,20 @@ public class Level {
     int maxObstacleGap;
     int obstacleMoveSpeed = 0;
     public int score = 0;
-    public static final int OBSTACLE_HEIGHT = 250;
     public int LEVEL_COMPLETE_THRESHOLD;
     public int SPAWN_THRESHOLD = 100;
     public boolean scrolling = true;
     public boolean horizontalControl = false;
     public boolean resetting = false;
     public Font lifeFont = new Font("Serif", Font.BOLD, 24);
+    public Sound sound = new Sound();
     
 
     public Level(
             int speed,
             Obstacle[] obstacles,
             GameImage bg,
+            GameImage playerImg,
             Player player,
             Obstacle goal,
             int minGap,
@@ -47,6 +48,7 @@ public class Level {
         this.obstacleMoveSpeed = speed;
         this.background = bg;
         LEVEL_COMPLETE_THRESHOLD = threshold;
+        player.player = playerImg;
         // System.out.println("obstacle scale: " + onField.get(0).obstacleImg.width);
     }
 
@@ -72,8 +74,7 @@ public class Level {
             Obstacle chosenObstacle = possibleObstacles[(int) (Math.random() * possibleObstacles.length)];
             Obstacle obst = new Obstacle(
                     500 + (int) (Math.random() * 30 + 1),
-                    OBSTACLE_HEIGHT,
-                    ObstacleProperties.L1_FLOWER,
+                    chosenObstacle.dimensions,
                     chosenObstacle.obstacleImg.image);
             onField.add(obst);
         }
@@ -99,13 +100,15 @@ public class Level {
                 // System.out.println("COLLISION HAPPENED! ");
                 // int prevSize = player.collisions.size();
                 if (!player.collisions.contains(cur)) {
+                    sound.playSound(SoundPath.CRASH_REGULAR.path);
                     System.out.println("life -- ");
                     player.lives--;
                 }
                 player.collisions.add(cur);
                 if (player.lives == 0) {
+                    sound.playSound(SoundPath.LEVEL_LOSE.path);
                     this.reset();
-                }
+                } 
             }
         }
 
@@ -123,18 +126,18 @@ public class Level {
         String toDraw = "";
         switch (player.lives) {
             case 0: 
-                toDraw = "❌ ❌ ❌";
+                toDraw = "❌❌❌";
             case 1:
-                toDraw = "❌ ❌ ❤️";
+                toDraw = "❌❌❤️";
                 break;
             case 2:
-                toDraw = "❌ ❤️ ❤️";
+                toDraw = "❌❤️❤️";
                 break;
             case 3: 
-                toDraw = "❤️ ❤️ ❤️";
+                toDraw = "❤️❤️❤️";
                 break;
             default: 
-                toDraw = "❌ ❌ ❌";
+                toDraw = "❌❌❌";
         }
 
         g.setFont(lifeFont);
